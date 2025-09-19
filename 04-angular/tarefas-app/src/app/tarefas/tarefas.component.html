@@ -1,0 +1,106 @@
+<div class="container">
+  <header class="header">
+    <h1>Sistema de Tarefas</h1>
+    <!-- TODO: Mostrar contador de pendentes aqui -->
+    <p class="contador">Pendentes: {{ /* IMPLEMENTAR */ }}</p>
+  </header>
+
+  <!-- Formulário de nova tarefa -->
+  <section class="nova-tarefa">
+    <h2>Nova Tarefa</h2>
+    <form [formGroup]="tarefaForm" (ngSubmit)="adicionarTarefa()" class="form-tarefa">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="titulo">Título *</label>
+          <input 
+            id="titulo" 
+            type="text" 
+            formControlName="titulo"
+            placeholder="Digite o título da tarefa">
+          <!-- TODO: Mostrar erro de validação aqui -->
+        </div>
+        
+        <div class="form-group">
+          <label for="prioridade">Prioridade</label>
+          <select id="prioridade" formControlName="prioridade">
+            <option value="baixa">Baixa</option>
+            <option value="media">Média</option>
+            <option value="alta">Alta</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="descricao">Descrição *</label>
+          <textarea 
+            id="descricao" 
+            formControlName="descricao"
+            placeholder="Descreva a tarefa"></textarea>
+          <!-- TODO: Mostrar erro de validação aqui -->
+        </div>
+
+        <div class="form-group">
+          <label for="dataLimite">Data Limite *</label>
+          <input 
+            id="dataLimite" 
+            type="date" 
+            formControlName="dataLimite">
+          <!-- TODO: Mostrar erro de validação aqui -->
+        </div>
+      </div>
+
+      <button 
+        type="submit" 
+        class="btn-adicionar"
+        [disabled]="tarefaForm.invalid">
+        Adicionar Tarefa
+      </button>
+    </form>
+  </section>
+
+  <!-- Filtros e busca -->
+  <section class="filtros">
+    <div class="filtros-botoes">
+      <!-- TODO: Implementar botões de filtro com classe 'ativo' quando selecionado -->
+      <button>Todas</button>
+      <button>Pendentes</button>
+      <button>Concluídas</button>
+    </div>
+    
+    <div class="busca">
+      <input 
+        type="text" 
+        placeholder="Buscar tarefas..."
+        class="input-busca">
+      <!-- TODO: Conectar com método buscarTarefas() -->
+    </div>
+  </section>
+
+  <!-- Lista de tarefas -->
+  <section class="lista-tarefas">
+    <!-- TODO: Implementar *ngFor para tarefasFiltradas -->
+    <div class="tarefa-item">
+      <div class="tarefa-conteudo">
+        <h3>{{ /* titulo da tarefa */ }}</h3>
+        <p>{{ /* descrição da tarefa */ }}</p>
+        <div class="tarefa-meta">
+          <span class="prioridade">{{ /* prioridade */ }}</span>
+          <span class="data-limite">{{ /* data limite formatada */ }}</span>
+        </div>
+      </div>
+      
+      <div class="tarefa-acoes">
+        <!-- TODO: Implementar botões de ação -->
+        <button class="btn-concluir">Concluir</button>
+        <button class="btn-remover">Remover</button>
+      </div>
+    </div>
+
+    <!-- Mensagem quando não há tarefas -->
+    <div class="sem-tarefas">
+      <!-- TODO: Mostrar apenas quando tarefasFiltradas estiver vazia -->
+      <p>Nenhuma tarefa encontrada</p>
+    </div>
+  </section>
+</div>

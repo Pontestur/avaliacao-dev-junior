@@ -1,0 +1,49 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.pytest_cache/
+
+# Node.js
+node_modules/
+dist/
+.angular/
+
+# SQLite
+*.db-journal
+
+# IDE
+.vscode/settings.json
+
+# Logs e cache Python
+*.log
+.pytest_cache/
+__pycache__/
+
+# Node modules (muito pesado)
+node_modules/
+dist/
+
+# Build artifacts C#
+bin/
+obj/
+*.user
+
+# IDE files
+.vscode/
+.vs/
+
+# Database journals
+*.db-journal
+
+# OS files
+.DS_Store
+Thumbs.db
