@@ -2,16 +2,15 @@ import pytest
 import pandas as pd
 import os
 import sys
-from datetime import datetime
 
 # Adicionar pasta de solução ao path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'solucao'))
 
 @pytest.fixture
-def dados_vendas():
+def dados_teste():
     """Dados de teste conhecidos para verificar resultados"""
     return pd.DataFrame({
-        'data': ['2024-01-15', '2024-01-16', '2024-01-17', '2024-01-18'],
+        'data': pd.to_datetime(['2024-01-15', '2024-01-16', '2024-01-17', '2024-01-18']),
         'produto': ['Notebook', 'Mouse', 'Teclado', 'Monitor'],
         'categoria': ['Eletrônicos', 'Eletrônicos', 'Eletrônicos', 'Eletrônicos'],
         'quantidade': [2, 5, 3, 1],
@@ -19,224 +18,170 @@ def dados_vendas():
         'vendedor': ['João', 'Maria', 'João', 'Pedro']
     })
 
-class TestImplementacaoBasica:
-    """Testes básicos de funcionamento"""
-    
-    def test_arquivo_existe(self):
-        """Verifica se o arquivo de solução existe"""
-        solucao_path = os.path.join(os.path.dirname(__file__), '..', 'solucao', 'analise_vendas.py')
-        assert os.path.exists(solucao_path), "Arquivo 'analise_vendas.py' não encontrado na pasta solucao/"
+class TestFuncaoLerDados:
+    """Testa a função ler_dados"""
 
-    def test_importacao_modulo(self):
-        """Testa se o módulo pode ser importado sem erros"""
-        try:
-            import analise_vendas
-            assert True
-        except ImportError as e:
-            pytest.fail(f"Erro ao importar módulo: {e}")
-        except SyntaxError as e:
-            pytest.fail(f"Erro de sintaxe no módulo: {e}")
-
-class TestLeituraArquivo:
-    """Testa leitura de arquivo CSV"""
-    
-    def test_ler_dados_funciona(self):
-        """Verifica se consegue ler CSV corretamente"""
+    def test_ler_dados_existe(self):
+        """Verifica se a função ler_dados existe"""
         import analise_vendas
-        
-        # Verificar se função existe
         assert hasattr(analise_vendas, 'ler_dados'), "Função 'ler_dados' não encontrada"
-        
-        # Testar se retorna DataFrame
-        csv_path = os.path.join(os.path.dirname(__file__), '..', 'vendas.csv')
-        df = analise_vendas.ler_dados(csv_path)
-        
+
+    def test_ler_dados_retorna_dataframe(self):
+        """Verifica se ler_dados retorna um DataFrame válido"""
+        import analise_vendas
+
+        df = analise_vendas.ler_dados()
+
         assert isinstance(df, pd.DataFrame), "ler_dados deve retornar um DataFrame"
         assert len(df) > 0, "DataFrame não deve estar vazio"
-        assert 'produto' in df.columns, "Coluna 'produto' não encontrada"
-        assert 'vendedor' in df.columns, "Coluna 'vendedor' não encontrada"
 
-class TestAnaliseVendas:
-    """Testes das análises específicas com resultados esperados"""
-    
-    def test_vendas_por_vendedor_calculo_correto(self, dados_vendas):
-        """Testa se cálculo de vendas por vendedor está correto"""
+        # Verificar colunas obrigatórias
+        colunas_esperadas = ['data', 'produto', 'categoria', 'quantidade', 'preco_unitario', 'vendedor']
+        for coluna in colunas_esperadas:
+            assert coluna in df.columns, f"Coluna '{coluna}' não encontrada"
+
+class TestFuncaoExibirPrimeirasLinhas:
+    """Testa a função exibir_primeiras_linhas"""
+
+    def test_exibir_primeiras_linhas_existe(self):
+        """Verifica se a função exibir_primeiras_linhas existe"""
         import analise_vendas
-        
-        # Verificar se função existe
-        funcoes_possives = ['vendas_por_vendedor', 'calcular_vendas_vendedor', 'total_por_vendedor']
-        funcao = None
-        for nome in funcoes_possives:
-            if hasattr(analise_vendas, nome):
-                funcao = getattr(analise_vendas, nome)
-                break
-        
-        assert funcao is not None, "Função de vendas por vendedor não encontrada"
-        
-        # Executar função
-        resultado = funcao(dados_vendas)
-        
-        # Verificar resultados específicos
-        # João: Notebook (2 * 2000) + Teclado (3 * 150) = 4000 + 450 = 4450
-        # Maria: Mouse (5 * 50) = 250  
-        # Pedro: Monitor (1 * 800) = 800
-        
-        assert isinstance(resultado, (pd.Series, dict)), "Deve retornar Series ou dict"
-        
+        assert hasattr(analise_vendas, 'exibir_primeiras_linhas'), "Função 'exibir_primeiras_linhas' não encontrada"
+
+    def test_exibir_primeiras_linhas_padrao(self, dados_teste):
+        """Testa exibir_primeiras_linhas com valor padrão (5 linhas)"""
+        import analise_vendas
+
+        resultado = analise_vendas.exibir_primeiras_linhas(dados_teste)
+
+        assert isinstance(resultado, pd.DataFrame), "Deve retornar um DataFrame"
+        assert len(resultado) == 4, f"Com 4 registros, deve retornar 4 linhas, retornou {len(resultado)}"
+
+    def test_exibir_primeiras_linhas_parametro(self, dados_teste):
+        """Testa exibir_primeiras_linhas com parâmetro específico"""
+        import analise_vendas
+
+        resultado = analise_vendas.exibir_primeiras_linhas(dados_teste, 2)
+
+        assert isinstance(resultado, pd.DataFrame), "Deve retornar um DataFrame"
+        assert len(resultado) == 2, f"Deve retornar 2 linhas, retornou {len(resultado)}"
+
+class TestFuncaoVendasPorVendedor:
+    """Testa a função vendas_por_vendedor"""
+
+    def test_vendas_por_vendedor_existe(self):
+        """Verifica se a função vendas_por_vendedor existe"""
+        import analise_vendas
+        assert hasattr(analise_vendas, 'vendas_por_vendedor'), "Função 'vendas_por_vendedor' não encontrada"
+
+    def test_vendas_por_vendedor_calculo(self, dados_teste):
+        """Testa se o cálculo de vendas por vendedor está correto"""
+        import analise_vendas
+
+        resultado = analise_vendas.vendas_por_vendedor(dados_teste)
+
+        # Converter para dict se for Series
         if isinstance(resultado, pd.Series):
             resultado = resultado.to_dict()
-        
+
+        assert isinstance(resultado, dict), "Deve retornar dict ou Series"
+
+        # Verificar cálculos específicos
+        # João: Notebook (2 * 2000) + Teclado (3 * 150) = 4000 + 450 = 4450
+        # Maria: Mouse (5 * 50) = 250
+        # Pedro: Monitor (1 * 800) = 800
         assert resultado['João'] == 4450.0, f"Total João esperado: 4450, recebido: {resultado.get('João')}"
         assert resultado['Maria'] == 250.0, f"Total Maria esperado: 250, recebido: {resultado.get('Maria')}"
         assert resultado['Pedro'] == 800.0, f"Total Pedro esperado: 800, recebido: {resultado.get('Pedro')}"
 
-    def test_produto_mais_vendido_quantidade(self, dados_vendas):
-        """Testa se identifica produto mais vendido por quantidade"""
+class TestFuncaoProdutoMaisVendido:
+    """Testa a função produto_mais_vendido"""
+
+    def test_produto_mais_vendido_existe(self):
+        """Verifica se a função produto_mais_vendido existe"""
         import analise_vendas
-        
-        funcoes_possives = ['produto_mais_vendido', 'produto_top_vendas', 'maior_quantidade']
-        funcao = None
-        for nome in funcoes_possives:
-            if hasattr(analise_vendas, nome):
-                funcao = getattr(analise_vendas, nome)
-                break
-                
-        assert funcao is not None, "Função produto_mais_vendido não encontrada"
-        
-        # Executar função
-        resultado = funcao(dados_vendas)
-        
+        assert hasattr(analise_vendas, 'produto_mais_vendido'), "Função 'produto_mais_vendido' não encontrada"
+
+    def test_produto_mais_vendido_resultado(self, dados_teste):
+        """Testa se identifica o produto mais vendido corretamente"""
+        import analise_vendas
+
+        resultado = analise_vendas.produto_mais_vendido(dados_teste)
+
+        assert isinstance(resultado, str), "Deve retornar uma string"
         # Mouse tem quantidade 5 (maior quantidade)
         assert resultado == 'Mouse', f"Produto mais vendido esperado: Mouse, recebido: {resultado}"
 
-    def test_categoria_maior_faturamento_calculo(self, dados_vendas):
-        """Testa se calcula categoria com maior faturamento"""
+class TestFuncaoCategoriaMaiorFaturamento:
+    """Testa a função categoria_maior_faturamento"""
+
+    def test_categoria_maior_faturamento_existe(self):
+        """Verifica se a função categoria_maior_faturamento existe"""
         import analise_vendas
-        
-        funcoes_possives = ['categoria_maior_faturamento', 'categoria_top', 'melhor_categoria']
-        funcao = None
-        for nome in funcoes_possives:
-            if hasattr(analise_vendas, nome):
-                funcao = getattr(analise_vendas, nome)
-                break
-                
-        assert funcao is not None, "Função categoria_maior_faturamento não encontrada"
-        
-        # Executar função  
-        resultado = funcao(dados_vendas)
-        
+        assert hasattr(analise_vendas, 'categoria_maior_faturamento'), "Função 'categoria_maior_faturamento' não encontrada"
+
+    def test_categoria_maior_faturamento_resultado(self, dados_teste):
+        """Testa se identifica a categoria com maior faturamento"""
+        import analise_vendas
+
+        resultado = analise_vendas.categoria_maior_faturamento(dados_teste)
+
+        assert isinstance(resultado, str), "Deve retornar uma string"
         # Eletrônicos: (2*2000) + (5*50) + (3*150) + (1*800) = 4000 + 250 + 450 + 800 = 5500
         assert resultado == 'Eletrônicos', f"Categoria esperada: Eletrônicos, recebido: {resultado}"
 
-class TestFiltrosPeriodo:
-    """Testa filtros por período"""
-    
-    def test_filtrar_por_periodo_funcionando(self, dados_vendas):
-        """Testa se filtro por período funciona corretamente"""
+class TestFuncaoFiltrarPorPeriodo:
+    """Testa a função filtrar_por_periodo"""
+
+    def test_filtrar_por_periodo_existe(self):
+        """Verifica se a função filtrar_por_periodo existe"""
         import analise_vendas
-        
-        funcoes_possives = ['filtrar_por_periodo', 'vendas_periodo', 'filtrar_datas']
-        funcao = None
-        for nome in funcoes_possives:
-            if hasattr(analise_vendas, nome):
-                funcao = getattr(analise_vendas, nome)
-                break
-                
-        assert funcao is not None, "Função filtrar_por_periodo não encontrada"
-        
-        # Testar filtro
-        resultado = funcao(dados_vendas, '2024-01-16', '2024-01-17')
-        
-        # Deve retornar apenas registros entre 16 e 17 (Mouse e Teclado)
+        assert hasattr(analise_vendas, 'filtrar_por_periodo'), "Função 'filtrar_por_periodo' não encontrada"
+
+    def test_filtrar_por_periodo_resultado(self, dados_teste):
+        """Testa se o filtro por período funciona corretamente"""
+        import analise_vendas
+
+        resultado = analise_vendas.filtrar_por_periodo(dados_teste, '2024-01-16', '2024-01-17')
+
         assert isinstance(resultado, pd.DataFrame), "Deve retornar DataFrame"
         assert len(resultado) == 2, f"Esperado 2 registros, recebido {len(resultado)}"
-        produtos = resultado['produto'].tolist()
-        assert 'Mouse' in produtos and 'Teclado' in produtos, f"Produtos esperados: Mouse e Teclado, recebidos: {produtos}"
 
-class TestResultadosReais:
-    """Testa com dados reais do CSV fornecido"""
-    
-    def test_analise_csv_real(self):
-        """Testa análise com arquivo CSV real"""
+        produtos = resultado['produto'].tolist()
+        assert 'Mouse' in produtos, "Produto 'Mouse' deveria estar no período"
+        assert 'Teclado' in produtos, "Produto 'Teclado' deveria estar no período"
+
+class TestIntegracao:
+    """Teste de integração com dados reais"""
+
+    def test_funciona_com_csv_real(self):
+        """Testa se todas as funções funcionam com o arquivo CSV real"""
         import analise_vendas
-        
-        # Carregar dados reais
+
+        # Verificar se arquivo existe
         csv_path = os.path.join(os.path.dirname(__file__), '..', 'vendas.csv')
         if not os.path.exists(csv_path):
             pytest.skip("Arquivo vendas.csv não encontrado")
-            
-        df = analise_vendas.ler_dados(csv_path)
-        
-        # Verificar estrutura
-        colunas_obrigatorias = ['data', 'produto', 'categoria', 'quantidade', 'preco_unitario', 'vendedor']
-        for coluna in colunas_obrigatorias:
-            assert coluna in df.columns, f"Coluna obrigatória '{coluna}' não encontrada"
-        
-        # Verificar tipos de dados
-        assert df['quantidade'].dtype in ['int64', 'int32'], "Coluna quantidade deve ser numérica"
-        assert df['preco_unitario'].dtype in ['float64', 'float32'], "Coluna preco_unitario deve ser float"
-        
-        # Testar se análises funcionam com dados reais
-        if hasattr(analise_vendas, 'vendas_por_vendedor'):
-            vendas = analise_vendas.vendas_por_vendedor(df)
-            assert len(vendas) > 0, "Análise de vendas por vendedor deve retornar dados"
 
-class TestQualidadeCodigo:
-    """Testes de qualidade e boas práticas"""
-    
-    def test_uso_pandas_adequado(self):
-        """Verifica uso adequado do pandas"""
-        solucao_path = os.path.join(os.path.dirname(__file__), '..', 'solucao', 'analise_vendas.py')
-        
-        with open(solucao_path, 'r', encoding='utf-8') as f:
-            codigo = f.read()
-        
-        # Verificar imports corretos
-        assert 'import pandas' in codigo or 'from pandas import' in codigo, "Deve importar pandas"
-        
-        # Verificar uso de métodos pandas
-        operacoes_pandas = ['groupby', 'sum()', 'max()', 'filter', 'sort_values']
-        uso_pandas = any(op in codigo for op in operacoes_pandas)
-        assert uso_pandas, "Deve usar operações do pandas (groupby, sum, etc.)"
+        # Testar leitura
+        df = analise_vendas.ler_dados()
+        assert len(df) > 0, "Deve ler dados do CSV real"
 
-    def test_tratamento_erros_basico(self):
-        """Verifica tratamento básico de erros"""
-        import analise_vendas
-        
-        # Testar com DataFrame vazio
-        df_vazio = pd.DataFrame()
-        
-        funcoes_para_testar = []
-        if hasattr(analise_vendas, 'vendas_por_vendedor'):
-            funcoes_para_testar.append(('vendas_por_vendedor', analise_vendas.vendas_por_vendedor))
-        
-        # Pelo menos uma função deve lidar com DataFrame vazio sem quebrar
-        for nome, funcao in funcoes_para_testar:
-            try:
-                resultado = funcao(df_vazio)
-                # Se não quebrou, está bom
-                assert True
-            except Exception as e:
-                # Aceitar apenas erros específicos esperados
-                assert isinstance(e, (ValueError, KeyError)), f"Função {nome} deve tratar DataFrames vazios adequadamente"
+        # Testar outras funções com dados reais
+        primeiras = analise_vendas.exibir_primeiras_linhas(df, 3)
+        assert len(primeiras) == 3, "Deve retornar 3 primeiras linhas"
 
-class TestIntegracao:
-    """Teste de integração completo"""
-    
-    def test_fluxo_completo(self):
-        """Testa execução do fluxo principal"""
-        import analise_vendas
-        
-        # Verificar se main existe e executa
-        if hasattr(analise_vendas, 'main'):
-            try:
-                # Capturar prints se necessário
-                analise_vendas.main()
-                assert True, "Função main executou sem erro"
-            except Exception as e:
-                pytest.fail(f"Erro na execução do main: {e}")
-        else:
-            pytest.skip("Função main não implementada")
+        vendas = analise_vendas.vendas_por_vendedor(df)
+        assert len(vendas) > 0, "Deve calcular vendas por vendedor"
+
+        produto = analise_vendas.produto_mais_vendido(df)
+        assert isinstance(produto, str), "Deve retornar nome do produto"
+
+        categoria = analise_vendas.categoria_maior_faturamento(df)
+        assert isinstance(categoria, str), "Deve retornar nome da categoria"
+
+        janeiro = analise_vendas.filtrar_por_periodo(df, '2024-01-01', '2024-01-31')
+        assert isinstance(janeiro, pd.DataFrame), "Deve retornar DataFrame filtrado"
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])

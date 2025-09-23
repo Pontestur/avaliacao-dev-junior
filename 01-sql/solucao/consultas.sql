@@ -2,16 +2,15 @@
 -- EXERCÍCIOS SQL - SISTEMA DE BIBLIOTECA
 -- ========================================
 -- INSTRUÇÕES: Complete as consultas SQL abaixo
--- Execute: sqlite3 01-sql/database.db < 01-sql/solucao/consultas.sql
 
 -- Exercício 1: Listar livros disponíveis ordenados por título
--- Objetivo: Mostrar todos os livros que estão disponíveis (disponivel = 1)
+-- Objetivo: Mostrar todos os livros que estão disponíveis 
 -- ordenados alfabeticamente por título
 -- TODO: Escrever consulta aqui
 
 
 -- Exercício 2: Empréstimos ativos com nome do usuário e título do livro  
--- Objetivo: Mostrar empréstimos que ainda não foram devolvidos (data_devolucao IS NULL)
+-- Objetivo: Mostrar empréstimos que ainda não foram devolvidos 
 -- com informações do usuário e do livro
 -- TODO: Escrever consulta aqui
 
