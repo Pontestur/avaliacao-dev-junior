@@ -22,30 +22,30 @@ export class AppComponent {
 
   // TODO: Implementar método adicionarTarefa()
   adicionarTarefa() {
-    // TODO: Usar this.tarefaService.adicionarTarefa(this.novoTitulo)
+    // TODO: Usar adicionarTarefa(novoTitulo) do tarefaService
     // TODO: Limpar novoTitulo após adicionar
   }
 
   // TODO: Implementar método toggleConcluida(id: number)
   toggleConcluida(id: number) {
-    // TODO: Usar this.tarefaService.toggleConcluida(id)
+    // TODO: Usar toggleConcluida(id) do tarefaService
   }
 
   // TODO: Implementar método removerTarefa(id: number)
   removerTarefa(id: number) {
-    // TODO: Usar this.tarefaService.removerTarefa(id)
+    // TODO: Usar removerTarefa(id) do tarefaService
   }
 
   // TODO: Implementar método filtrarTarefas()
   filtrarTarefas(): Tarefa[] {
-    // TODO: Usar this.tarefaService.filtrarTarefas(this.filtroAtual)
+    // TODO: Usar filtrarTarefas(this.filtroAtual) do tarefaService
     // TODO: Retornar array filtrado
     return [];
   }
 
   // TODO: Implementar método contarPendentes()
   contarPendentes(): number {
-    // TODO: Usar this.tarefaService.contarPendentes()
+    // TODO: Usar contarPendentes() do tarefaService
     return 0;
   }
 }
