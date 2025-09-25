@@ -19,9 +19,10 @@ def ler_dados():
     """
     
     caminho_arquivo = os.path.join(os.path.dirname(__file__), '..', 'vendas.csv')
-
+   
     # TODO: Implementar leitura do CSV
-    pass
+    df = pd.read_csv(caminho_arquivo)
+    return df
 
 def exibir_primeiras_linhas(df, n=5):
     """
@@ -35,7 +36,8 @@ def exibir_primeiras_linhas(df, n=5):
         pd.DataFrame: Primeiras N linhas do DataFrame
     """
     # TODO: Implementar retorno das primeiras linhas
-    pass
+    return df.head(n)
+    
 
 def vendas_por_vendedor(df):
     """
@@ -51,7 +53,9 @@ def vendas_por_vendedor(df):
         {'João Silva': 4850.0, 'Maria Santos': 1865.0, ...}
     """
     # TODO: Implementar cálculo
-    pass
+    df['total_na_venda'] = df['quantidade'] * df['preco_unitario']
+    total_vendedor = df.groupby('vendedor')['total_na_venda'].sum()
+    return total_vendedor
 
 def produto_mais_vendido(df):
     """
@@ -66,7 +70,9 @@ def produto_mais_vendido(df):
     Exemplo: 'Mouse Gamer' (se for o mais vendido)
     """
     # TODO: Implementar identificação
-    pass
+    vendas_por_produto = df.groupby('produto')['quantidade'].sum()
+    mv = vendas_por_produto.sort_values(ascending=False).head(1)
+    return mv
 
 def categoria_maior_faturamento(df):
     """
@@ -81,7 +87,9 @@ def categoria_maior_faturamento(df):
     Exemplo: 'Eletrônicos' (se tiver maior faturamento)
     """
     # TODO: Implementar cálculo
-    pass
+    faturamento_por_categoria = df.groupby('categoria')['total_na_venda'].sum()
+    return faturamento_por_categoria.head(1)
+    
 
 def filtrar_por_periodo(df, data_inicio, data_fim):
     """
@@ -99,7 +107,11 @@ def filtrar_por_periodo(df, data_inicio, data_fim):
         vendas_janeiro = filtrar_por_periodo(df, '2024-01-01', '2024-01-31')
     """
     # TODO: Implementar filtro
-    pass
+    data_inicio = '2024-01-01'
+    data_fim = '2024-01-31'
+
+    filtrado_data = df[(df['data'] >= data_inicio) & (df['data'] >= data_fim)]
+    return filtrado_data
 
 def main():
     """

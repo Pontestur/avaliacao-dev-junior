@@ -1,11 +1,16 @@
 <div class="container">
   <h1>Lista de Tarefas</h1>
 
-  <!-- 1. FORMULÁRIO PARA ADICIONAR NOVA TAREFA -->
   <div class="form-section">
     <!-- TODO: Criar input para digitar título da nova tarefa -->
     <!-- TODO: Conectar input com propriedade novoTitulo usando [(ngModel)] -->
     <!-- TODO: Criar botão "Adicionar" que chama método adicionarTarefa() -->
+    <input 
+      type="text" 
+      placeholder="O que precisa ser feito?" 
+      [(ngModel)]="novoTitulo">
+
+    <button (click)="adicionarTarefa()">Adicionar</button>
   </div>
 
   <!-- 2. FILTROS PARA EXIBIR DIFERENTES LISTAS -->
@@ -13,23 +18,59 @@
     <!-- TODO: Criar 3 botões: "Todas", "Pendentes", "Concluídas" -->
     <!-- TODO: Cada botão deve alterar a propriedade filtroAtual -->
     <!-- TODO: Botão ativo deve ter classe "active" -->
+    <button 
+      (click)="filtroAtual = 'todas'" 
+      [class.active]="filtroAtual === 'todas'">Todas</button>
+
+    <button 
+      (click)="filtroAtual = 'pendentes'" 
+      [class.active]="filtroAtual === 'pendentes'">Pendentes</button>
+
+    <button 
+      (click)="filtroAtual = 'concluidas'" 
+      [class.active]="filtroAtual === 'concluidas'">Concluídas</button>
   </div>
 
   <!-- 3. CONTADOR DE TAREFAS PENDENTES -->
   <div class="contador">
     <!-- TODO: Exibir quantas tarefas estão pendentes -->
     <!-- TODO: Chamar método contarPendentes() -->
+    Você tem {{ contarPendentes() }} tarefa{{ contarPendentes() !== 1 ? 's' : '' }} pendente{{ contarPendentes() !== 1 ? 's' : '' }}
   </div>
 
   <!-- 4. LISTA DE TAREFAS -->
-  <div class="tasks-list">
-    <!-- TODO: Usar *ngFor para listar tarefas de filtrarTarefas() -->
+	<div class="tasks-list">
+	<!-- TODO: Usar *ngFor para listar tarefas de filtrarTarefas() -->
     <!-- TODO: Para cada tarefa mostrar: -->
     <!--   - Checkbox/botão para marcar como concluída -->
     <!--   - Título da tarefa -->
     <!--   - Botão para remover -->
     <!-- TODO: Usar [ngClass] para aplicar .tarefa-concluida ou .tarefa-pendente -->
     <!-- TODO: Se não houver tarefas, mostrar mensagem "Nenhuma tarefa encontrada" -->
+    <div *ngIf="filtrarTarefas().length > 0">
+      <div *ngFor="let tarefa of filtrarTarefas()" class="task-item">
+        <div class="task-content">
+          
+          <input 
+            type="checkbox" 
+            [checked]="tarefa.concluida" 
+            (change)="toggleConcluida(tarefa.id)">
+          
+          <span 
+            class="task-title" 
+            [ngClass]="{ 'tarefa-concluida': tarefa.concluida, 'tarefa-pendente': !tarefa.concluida }">
+            {{ tarefa.titulo }}
+          </span>
+
+        </div>
+        
+        <button class="btn-remover" (click)="removerTarefa(tarefa.id)">Remover</button>
+      </div>
+    </div>
+
+    <div *ngIf="filtrarTarefas().length === 0" class="no-tasks">
+      Nenhuma tarefa encontrada.
+    </div>
   </div>
 </div>
 

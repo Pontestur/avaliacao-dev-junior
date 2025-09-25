@@ -23,14 +23,19 @@ namespace AvaliationApp
         public string Categoria { get; set; } = string.Empty;
 
         /// <summary>
-        /// Calcula o preço com desconto aplicado
+        /// Calcula o preço com desconto aplicado.
         /// </summary>
         /// <param name="percentualDesconto">Percentual de desconto (0-100)</param>
         /// <returns>Preço com desconto aplicado</returns>
         public decimal CalcularDesconto(decimal percentualDesconto)
         {
-            // TODO: Implementar cálculo de desconto
-            throw new NotImplementedException("Método CalcularDesconto não implementado");
+            // 1. Validação: Garante que o percentual esteja entre 0 e 100.
+            if (percentualDesconto < 0 || percentualDesconto > 100)
+            {
+                throw new ArgumentOutOfRangeException(nameof(percentualDesconto), 
+                    "O percentual de desconto deve estar entre 0 e 100.");
+            }
+            return this.Preco * (1 - (percentualDesconto / 100));
         }
     }
 }

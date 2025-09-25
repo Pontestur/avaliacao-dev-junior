@@ -19,12 +19,30 @@ namespace AvaliationApp
         /// </summary>
         public void AdicionarProduto(Produto produto)
         {
-            // TODO: Implementar adição de produto com validações
-            // - Verificar se produto não é null
-            // - Verificar se já existe produto com mesmo Id
-            // - Validar se Nome não está vazio
-            // - Validar se Categoria não está vazia
-            throw new NotImplementedException("Método AdicionarProduto não implementado");
+            // 1. Verificar se o objeto produto é nulo 
+            if (produto == null)
+            {
+                throw new ArgumentNullException(nameof(produto), "O produto não pode ser nulo.");
+            }
+
+            // 2. Validar se o Nome não está vazio ou nulo
+            if (string.IsNullOrEmpty(produto.Nome))
+            {
+                throw new ArgumentException("O nome do produto não pode ser vazio.", nameof(produto.Nome));
+            }
+
+            // 3. Validar se a Categoria não está vazia ou nula
+            if (string.IsNullOrEmpty(produto.Categoria))
+            {
+                throw new ArgumentException("A categoria do produto não pode ser vazia.", nameof(produto.Categoria));
+            }
+
+            // 4. Verificar se já existe um produto com o mesmo Id na lista
+            if (_produtos.Any(p => p.Id == produto.Id))
+            {
+                throw new ArgumentException($"Já existe um produto cadastrado com o Id {produto.Id}.", nameof(produto));            }
+
+            _produtos.Add(produto);
         }
 
         /// <summary>
@@ -33,12 +51,20 @@ namespace AvaliationApp
         /// </summary>
         public IEnumerable<Produto> BuscarPorCategoria(string categoria)
         {
-            // TODO: Implementar busca por categoria com validações
-            // - Verificar se categoria não é null ou vazia
-            // - Fazer busca case-insensitive
-            // - Remover espaços em branco da categoria antes da busca
-            // - Retornar lista vazia se categoria for inválida
-            throw new NotImplementedException("Método BuscarPorCategoria não implementado");
+            // Regra: Verificar se categoria não é null ou vazia
+            // Regra: Retornar lista vazia se categoria for inválida
+            if (string.IsNullOrWhiteSpace(categoria))
+            {
+                return Enumerable.Empty<Produto>();
+            }
+
+            // Regra: Remover espaços em branco da categoria antes da busca
+            var categoriaLimpa = categoria.Trim();
+
+            // Regra: Fazer busca case-insensitive
+            return _produtos.Where(p => 
+                string.Equals(p.Categoria, categoriaLimpa, StringComparison.OrdinalIgnoreCase)
+            );
         }
 
         /// <summary>
@@ -51,7 +77,7 @@ namespace AvaliationApp
             // - Ordenar por preço (decrescente) e depois por nome (crescente)
             // - Retornar no máximo 3 produtos
             // - Se houver menos de 3 produtos, retornar todos
-            throw new NotImplementedException("Método ProdutosMaisCaros não implementado");
+            return _produtos.OrderByDescending(p => p.Preco).ThenBy(p => p.Nome).Take(3);
         }
 
         /// <summary>
@@ -63,25 +89,63 @@ namespace AvaliationApp
         /// </summary>
         public decimal ValorTotalEstoque()
         {
-            // TODO: Implementar cálculo do valor total com desconto progressivo
-            // - Somar todos os preços dos produtos
-            // - Aplicar desconto baseado na quantidade total de produtos
-            // - Retornar o valor com desconto aplicado
-            throw new NotImplementedException("Método ValorTotalEstoque não implementado");
+            decimal valorBruto = _produtos.Sum(p => p.Preco);
+            int quantidadeTotal = _produtos.Count;
+            
+            decimal percentualDesconto = 0m;
+
+            if (quantidadeTotal >= 50)
+            {
+                percentualDesconto = 15m;
+            }
+            else if (quantidadeTotal >= 30)
+            {
+                percentualDesconto = 10m; 
+            }
+            else if (quantidadeTotal >= 10)
+            {
+                percentualDesconto = 5m;
+            }
+
+            decimal valorDoDesconto = valorBruto * (percentualDesconto / 100);
+            decimal valorFinal = valorBruto - valorDoDesconto;
+
+            return valorFinal;
         }
 
         /// <summary>
-        /// Agrupa produtos por categoria e retorna estatísticas de cada categoria
-        /// Retorna: Nome da categoria, Quantidade de produtos, Preço médio, Produto mais caro
+        /// Agrupa produtos por categoria e retorna estatísticas de cada categoria.
+        /// Retorna: Nome da categoria, Quantidade de produtos, Preço médio, Produto mais caro.
         /// </summary>
         public IEnumerable<object> EstatisticasPorCategoria()
         {
-            // TODO: Implementar agrupamento e cálculo de estatísticas
-            // - Agrupar produtos por categoria
-            // - Para cada categoria calcular: quantidade, preço médio, produto mais caro
-            // - Retornar objeto anônimo com: Categoria, Quantidade, PrecoMedio, ProdutoMaisCaro
-            // - Ordenar por quantidade de produtos (decrescente)
-            throw new NotImplementedException("Método EstatisticasPorCategoria não implementado");
+            return _produtos
+                // 1. Agrupa todos os produtos pela propriedade 'Categoria'.
+                //    O resultado é uma coleção de grupos, onde cada grupo tem uma chave (a categoria)
+                //    e uma lista de todos os produtos pertencentes a essa categoria.
+                .GroupBy(p => p.Categoria)
+                
+                // 2. Transforma (projeta) cada grupo em um novo objeto anônimo
+                //    com as estatísticas calculadas.
+                .Select(grupo => new
+                {
+                    // A chave do grupo é o nome da categoria.
+                    Categoria = grupo.Key,
+                    
+                    // Conta quantos produtos existem no grupo.
+                    Quantidade = grupo.Count(),
+                    
+                    // Calcula a média de preço dos produtos no grupo.
+                    PrecoMedio = grupo.Average(p => p.Preco),
+                    
+                    // Encontra o produto mais caro dentro do grupo ordenando-os
+                    // por preço e pegando o primeiro.
+                    ProdutoMaisCaro = grupo.OrderByDescending(p => p.Preco).First()
+                })
+                
+                // 3. Ordena a lista final de estatísticas pela quantidade de produtos
+                //    em ordem decrescente (da maior para a menor).
+                .OrderByDescending(estatisticas => estatisticas.Quantidade);
         }
 
         /// <summary>
