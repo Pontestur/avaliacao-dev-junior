@@ -35,22 +35,28 @@ Implemente os seguintes métodos:
 
 #### `AdicionarProduto(Produto produto)`
 - Adiciona um produto à lista interna de produtos
-- Não deve aceitar produtos nulos
+- **Validações:** Não aceitar produtos nulos, IDs duplicados, nomes ou categorias vazias
 
 #### `BuscarPorCategoria(string categoria)`
 - Retorna todos os produtos que pertencem à categoria especificada
-- Busca deve ser case-sensitive
-- Retorna lista vazia se nenhum produto for encontrado
+- **Busca case-insensitive** e remove espaços em branco
+- Retorna lista vazia se categoria for inválida
 
 #### `ProdutosMaisCaros()`
 - Retorna os 3 produtos mais caros do estoque
-- Ordena por preço (decrescente)
+- Ordena por preço (decrescente), em caso de empate por nome (crescente)
 - Se houver menos de 3 produtos, retorna todos os disponíveis
-- Retorna lista vazia se não houver produtos
 
 #### `ValorTotalEstoque()`
-- Calcula e retorna a soma dos preços de todos os produtos no estoque
-- Retorna 0 se o estoque estiver vazio
+- Calcula valor total com **desconto progressivo:**
+  - 10+ produtos: 5% desconto
+  - 20+ produtos: 10% desconto
+  - 50+ produtos: 15% desconto
+
+#### `EstatisticasPorCategoria()`
+- Agrupa produtos por categoria
+- Retorna objeto anônimo com: Categoria, Quantidade, PrecoMedio, ProdutoMaisCaro
+- Ordenado por quantidade de produtos (decrescente)
 
 ## Como Executar
 
@@ -61,32 +67,38 @@ Implemente os seguintes métodos:
 ### Comandos para Execução
 
 1. **Navegar para o diretório do projeto:**
-   ```bash
+   Execute no terminal:
+   ```
    cd 02-csharp
    ```
 
 2. **Restaurar dependências:**
-   ```bash
+   Execute no terminal:
+   ```
    dotnet restore
    ```
 
 3. **Compilar o projeto:**
-   ```bash
+   Execute no terminal:
+   ```
    dotnet build
    ```
 
 4. **Executar os testes:**
-   ```bash
+   Execute no terminal:
+   ```
    dotnet test
    ```
 
 5. **Executar testes com detalhes:**
-   ```bash
+   Execute no terminal:
+   ```
    dotnet test --verbosity normal
    ```
 
 6. **Executar testes específicos:**
-   ```bash
+   Execute no terminal:
+   ```
    # Executar apenas testes de uma classe
    dotnet test --filter "ClassName=ProdutoTests"
    dotnet test --filter "ClassName=EstoqueManagerTests"
@@ -108,7 +120,8 @@ Implemente os seguintes métodos:
 
 
 #### Linha de Comando com Debug
-```bash
+Execute no terminal:
+```
 # Executar em modo debug (útil para ver stack traces completos)
 dotnet test --logger "console;verbosity=detailed"
 
@@ -119,7 +132,7 @@ dotnet test --collect:"XPlat Code Coverage"
 ### Estado Inicial dos Testes
 Ao executar `dotnet test` antes de implementar os métodos, você verá:
 ```
-Com falha! – Com falha: 7, Aprovado: 3, Ignorado: 0, Total: 10
+Com falha! – Com falha: 16, Aprovado: 3, Ignorado: 0, Total: 19
 ```
 
 Isso é esperado, pois os métodos ainda não foram implementados.
@@ -170,7 +183,7 @@ Isso é esperado, pois os métodos ainda não foram implementados.
 Quando você implementar todos os métodos corretamente, ao executar `dotnet test`, você deve ver algo como:
 
 ```
-Aprovado!  - Com falha:     0, Aprovado:    10, Ignorado:     0, Total:    10
+Aprovado!  - Com falha:     0, Aprovado:    19, Ignorado:     0, Total:    19
 ```
 
 ## Entrega

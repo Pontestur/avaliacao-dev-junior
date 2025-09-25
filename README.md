@@ -1,12 +1,11 @@
 # Avaliação Técnica - Desenvolvedor Fullstack Junior
 
 ## 🎯 Objetivo
-Avaliar conhecimentos em Git, SQL, C#, Python e Angular através de exercícios práticos.
+Avaliar conhecimentos em SQL, C#, Python e Angular através de exercícios práticos.
 
-## 📋 Pré-requisitos (Windows + Visual Studio Code)
+## 📋 Pré-requisitos
 
 ### Software Obrigatório:
-
 1. **Visual Studio Code** - [Download aqui](https://code.visualstudio.com/)
 2. **Git for Windows** - [Download aqui](https://git-scm.com/download/win)
 3. **.NET 9.0 SDK** - [Download aqui](https://dotnet.microsoft.com/download)
@@ -15,195 +14,220 @@ Avaliar conhecimentos em Git, SQL, C#, Python e Angular através de exercícios 
 
 ### Comandos pós-instalação:
 ```cmd
-# Instalar Angular CLI
-npm install -g @angular/cli
-
 # Verificar instalações
 git --version
 dotnet --version
-python --version
+python --version  # ou py --version no Windows
 node --version
 npm --version
-ng version
 ```
 
-### Extensões Recomendadas do VS Code:
+## 🚀 Setup Automático
 
-#### Para SQL:
-- **SQLite** (alexcvzz.vscode-sqlite) - *Obrigatória para Parte 1*
+**Execute uma única vez para configurar todo o ambiente:**
 
-#### Para C#:
-- **C# Dev Kit** (Microsoft)
-- **.NET Install Tool** (Microsoft)
-
-#### Para Python:
-- **Python** (Microsoft)
-- **Pylance** (Microsoft)
-
-#### Para Angular:
-- **Angular Language Service** (Angular)
-- **TypeScript Importer** (pmneo)
-
-#### Geral:
-- **GitLens** (Eric Amodio)
-- **Auto Rename Tag** (Jun Han)
-
-## ✅ Verificar Instalação
-
-Abra o **Terminal** no VS Code (`Ctrl + '`) e execute:
-
-## 🚀 Como Executar Cada Parte
-
-### 1️⃣ SQL (Parte 1)
-
-**O que fazer:**
-- Completar **4 consultas SQL** no arquivo `01-sql/solucao/consultas.sql`
-- Usar extensão **SQLite** do VS Code para testar consultas
-- Banco de dados: sistema de biblioteca (livros, usuários, empréstimos)
-
-**Comandos:**
-```cmd
-cd 01-sql
-pip install -r requirements.txt
-pytest tests/ -v
+```bash
+./setup.sh
 ```
 
-**Extensão obrigatória no VS Code:**
-- **SQLite** (alexcvzz.vscode-sqlite) - para visualizar dados e testar consultas
+O script irá:
+- ✅ Verificar todas as dependências necessárias
+- ✅ Criar banco SQLite com dados de teste
+- ✅ Configurar projetos C# com testes
+- ✅ Instalar dependências Python (pandas, pytest)
+- ✅ Criar projeto Angular com dependências
+- ✅ Inicializar repositório Git
 
-### 2️⃣ C# (Parte 2)
-
-**O que fazer:**
-- Implementar métodos em classes `Produto.cs` e `EstoqueManager.cs`
-- Conceitos: POO, LINQ, manipulação de listas, validações
-
-**Comandos:**
-```cmd
-cd 02-csharp
-dotnet restore
-dotnet build
-dotnet test --logger console
+**Para verificar se tudo está funcionando:**
+```bash
+./run-tests.sh
 ```
 
-### 3️⃣ Python (Parte 3)
+## 📋 O Que Você Precisa Implementar
 
-**O que fazer:**
-- Implementar **6 funções** de análise de dados com pandas
-- Arquivo: `03-python/solucao/analise_vendas.py`
-- Conceitos: manipulação de DataFrames, agregações, filtros
+### 1️⃣ SQL (30 min) - `01-sql/solucao/consultas.sql`
+**Sistema de Biblioteca**
+- ✏️ **4 consultas SQL** sobre livros, usuários e empréstimos
+- 📊 Consultas com JOIN, GROUP BY, filtros e ordenação
+- 🗄️ Banco SQLite com dados de teste já criado
 
-**Comandos:**
-```cmd
-cd 03-python
-pip install -r requirements.txt
-cd solucao
-python analise_vendas.py
-cd ..
-pytest tests/ -v
+**Para testar:**
+```bash
+cd 01-sql/tests && python test_queries.py
 ```
 
-### 4️⃣ Angular (Parte 4)
+### 2️⃣ C# (45 min) - Classes em `02-csharp/AvaliationApp/`
+**Sistema de Estoque**
+- ✏️ Implementar métodos em `Produto.cs` e `EstoqueManager.cs`
+- 🔧 Validações, LINQ, lógica de negócio e tratamento de erros
+- 🧪 **19 testes** para validar implementação
 
-**O que fazer:**
-- Implementar **Lista de Tarefas** no componente principal
-- Arquivo: `04-angular/tarefas-app/src/app/app.component.ts` e `.html`
-- Conceitos: data binding, eventos, diretivas, services
-
-**Comandos:**
-```cmd
-cd 04-angular\tarefas-app
-npm install
-ng serve
+**Para testar:**
+```bash
+cd 02-csharp && dotnet test
 ```
-**Abrir navegador em:** `http://localhost:4200`
 
-## ⏰ Tempo Estimado por Exercício
-- **SQL**: 30 minutos
-- **C#**: 45 minutos
-- **Python**: 35 minutos
-- **Angular**: 60 minutos
+### 3️⃣ Python (35 min) - `03-python/solucao/analise_vendas.py`
+**Análise de Dados de Vendas**
+- ✏️ **6 funções** de análise com pandas
+- 📊 Manipulação de DataFrame, agrupamentos, filtros
+- 📁 CSV com dados de vendas já criado
 
-**Total: ~3 horas**
-
-## 🧪 Executar Testes
-
-### No Terminal do VS Code (`Ctrl + '`):
-
-```cmd
-# SQL
-cd 01-sql
-pytest tests/ -v
-
-# C#
-cd 02-csharp
-dotnet test --logger console
-
-# Python
-cd 03-python
-pytest tests/ -v
-
-# Angular (opcional - testes unitários)
-cd 04-angular\tarefas-app
-ng test --watch=false --browsers=ChromeHeadless
+**Para testar:**
+```bash
+cd 03-python/tests && python -m pytest test_analise.py -v
 ```
+
+### 4️⃣ Angular (60 min) - `04-angular/tarefas-app/src/app/`
+**Lista de Tarefas**
+- ✏️ Implementar CRUD de tarefas no componente principal
+- 🔄 Data binding, eventos, diretivas estruturais
+- 🎨 Interface responsiva e funcional
+
+**Para testar:**
+```bash
+cd 04-angular/tarefas-app && ng serve
+```
+**Abrir:** `http://localhost:4200`
+
+## ⏰ Tempo Total Estimado: ~3 horas
 
 ## 📁 Estrutura do Projeto
 
 ```
 avaliacao-dev-junior/
-├── 01-sql/           # Exercícios de consultas SQL
-├── 02-csharp/        # Exercícios de C# (.NET 9.0)
-├── 03-python/        # Exercícios de análise de dados Python
-├── 04-angular/       # Exercícios de frontend Angular
-└── README.md         # Este arquivo
+├── 01-sql/
+│   ├── database.db          # Banco SQLite (criado pelo setup)
+│   ├── solucao/
+│   │   └── consultas.sql    # 👈 IMPLEMENTAR AQUI
+│   └── tests/
+├── 02-csharp/
+│   ├── AvaliationApp/
+│   │   ├── Produto.cs       # 👈 IMPLEMENTAR AQUI
+│   │   └── EstoqueManager.cs # 👈 IMPLEMENTAR AQUI
+│   └── AvaliationApp.Tests/ # Testes (19 testes)
+├── 03-python/
+│   ├── vendas.csv           # Dados de teste (criado pelo setup)
+│   ├── solucao/
+│   │   └── analise_vendas.py # 👈 IMPLEMENTAR AQUI
+│   └── tests/
+├── 04-angular/
+│   └── tarefas-app/         # Projeto Angular (criado pelo setup)
+│       └── src/app/
+│           ├── app.component.ts  # 👈 IMPLEMENTAR AQUI
+│           └── app.component.html # 👈 IMPLEMENTAR AQUI
+├── setup.sh                # Script de configuração
+├── run-tests.sh            # Script de verificação
+└── README.md               # Este arquivo
 ```
 
-## 📚 Links Úteis
+## 🧪 Comandos de Teste por Tecnologia
 
-- [Documentação .NET](https://docs.microsoft.com/dotnet/)
-- [Documentação Python](https://docs.python.org/)
-- [Documentação Angular](https://angular.io/docs)
-- [Pandas Documentation](https://pandas.pydata.org/docs/)
+```bash
+# Testar tudo de uma vez
+./run-tests.sh
+
+# Testar individualmente:
+
+# SQL
+cd 01-sql/tests && python test_queries.py
+
+# C#
+cd 02-csharp && dotnet test --verbosity minimal
+
+# Python
+cd 03-python/tests && python -m pytest test_analise.py -v
+
+# Angular (build apenas - sem testes unitários específicos)
+cd 04-angular/tarefas-app && ng build
+```
+
+## 💡 Extensões Recomendadas do VS Code
+
+### Essenciais:
+- **SQLite** (alexcvzz.vscode-sqlite) - *Para visualizar banco de dados*
+- **C# Dev Kit** (Microsoft) - *Para C#*
+- **Python** (Microsoft) - *Para Python*
+- **Angular Language Service** (Angular) - *Para Angular*
+
+### Úteis:
+- **GitLens** (Eric Amodio) - *Para Git*
+- **Auto Rename Tag** (Jun Han) - *Para HTML*
 
 ## 🆘 Problemas Comuns
 
-### Erro de versão do .NET
+### ❌ Setup falhou
 ```bash
-# Verificar versão instalada
-dotnet --version
-# Deve ser 9.0.x
+# Reconfigurar tudo
+rm .setup_done && ./setup.sh
 ```
 
-### Erro de módulos Python não encontrados
-```cmd
-# Instalar dependências
-pip install -r requirements.txt
-
-# Ou usar ambiente virtual (recomendado)
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
+### ❌ Erro de versão do .NET
+```bash
+dotnet --version  # Deve ser 9.0.x
 ```
 
-### Erro no Angular CLI
+### ❌ Python não encontrado no Windows
 ```cmd
-# Instalar Angular CLI globalmente
+# Tentar com 'py' ao invés de 'python'
+py --version
+py -m pip install pandas pytest
+```
+
+### ❌ Angular CLI não instalado
+```bash
 npm install -g @angular/cli
-# Verificar instalação
 ng version
 ```
 
-### Abrindo projetos no VS Code
-```cmd
-# Abrir pasta específica
+### 💡 Abrindo projetos no VS Code
+```bash
+# Projeto específico
 code 02-csharp
 code 03-python
-code 04-angular\tarefas-app
+code 04-angular/tarefas-app
 
-# Ou abrir pasta atual
+# Pasta raiz (recomendado)
 code .
 ```
 
+## 📚 Links de Referência
+
+- [.NET Documentation](https://docs.microsoft.com/dotnet/)
+- [Python Documentation](https://docs.python.org/)
+- [Pandas Documentation](https://pandas.pydata.org/docs/)
+- [Angular Documentation](https://angular.io/docs)
+- [SQLite Tutorial](https://www.sqlite.org/lang.html)
+
+## ✅ Critérios de Avaliação
+
+### SQL (25%)
+- ✅ Sintaxe correta e consultas funcionais
+- ✅ Uso adequado de JOIN, GROUP BY, WHERE
+- ✅ Resultados corretos conforme especificação
+
+### C# (25%)
+- ✅ Implementação completa dos métodos
+- ✅ Validações e tratamento de erros
+- ✅ Uso adequado de LINQ e POO
+
+### Python (25%)
+- ✅ Funções implementadas corretamente
+- ✅ Uso adequado do pandas
+- ✅ Manipulação correta de DataFrames
+
+### Angular (25%)
+- ✅ CRUD funcional completo
+- ✅ Interface responsiva e usável
+- ✅ Uso correto de TypeScript e Angular
+
 ---
 
-**Boa sorte com a avaliação! 🚀**
+## 🎯 **Começar Agora**
+
+1. **Execute:** `./setup.sh` (uma única vez)
+2. **Verifique:** `./run-tests.sh`
+3. **Implemente:** seguindo a estrutura acima
+4. **Teste:** conforme avança nas implementações
+
+**Boa sorte! 🚀**

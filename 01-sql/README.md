@@ -93,9 +93,14 @@ Encontrar usuários que nunca fizeram empréstimos
 ## 🧪 Como Testar
 
 ### Executar Testes Automatizados
-```bash
+Execute no terminal:
+```
 # No diretório raiz do projeto
 py 01-sql/tests/test_queries.py
+
+# Ou no diretório 01-sql/tests
+cd 01-sql/tests
+py test_queries.py
 ```
 
 ### Interpretar Resultados

@@ -25,20 +25,18 @@ Criar uma **Lista de Tarefas** simples implementando funcionalidades básicas do
 - **TypeScript** - Linguagem
 - **CSS3** - Estilização
 
-## Service Pronto para Uso
+## Estrutura Base Já Criada
 
-O arquivo `tarefa.service.ts` já está **implementado e pronto** com:
-- Interface `Tarefa` definida
-- Dados mock (5 tarefas de exemplo)
-- Métodos completos para todas as operações
+O projeto Angular já contém:
+- **Interface Tarefa** definida no `app.component.ts`
+- **Projeto Angular** totalmente configurado
+- **Dependências** pré-instaladas
+- **Estrutura base** dos componentes
 
-**Métodos disponíveis no TarefaService:**
-- `getTarefas()` - Retorna todas as tarefas
-- `adicionarTarefa(titulo: string)` - Adiciona nova tarefa
-- `toggleConcluida(id: number)` - Alterna status de conclusão
-- `removerTarefa(id: number)` - Remove tarefa pelo ID
-- `filtrarTarefas(filtro)` - Filtra por status
-- `contarPendentes()` - Conta tarefas pendentes
+**Você precisa implementar:**
+- Lógica no `app.component.ts`
+- Template no `app.component.html`
+- Estilos no `app.component.css`
 
 ## Exercícios a Implementar
 
@@ -86,17 +84,20 @@ Funcionalidade de exclusão:
 ## Como Executar
 
 1. **Navegar para o diretório:**
-   ```bash
+   Execute no terminal:
+   ```
    cd 04-angular/tarefas-app
    ```
 
 2. **Instalar dependências:**
-   ```bash
+   Execute no terminal:
+   ```
    npm install
    ```
 
 3. **Executar aplicação:**
-   ```bash
+   Execute no terminal:
+   ```
    ng serve
    # ou
    npm start
@@ -109,23 +110,25 @@ Funcionalidade de exclusão:
 
 ## Estrutura Base para Implementar
 
-### Usando o TarefaService (app.component.ts)
+### Estrutura Base (app.component.ts)
 ```typescript
-import { TarefaService, Tarefa } from './tarefa.service';
+interface Tarefa {
+  id: number;
+  titulo: string;
+  concluida: boolean;
+}
 
 export class AppComponent {
+  tarefas: Tarefa[] = [];
   novoTitulo = '';
   filtroAtual: 'todas' | 'pendentes' | 'concluidas' = 'todas';
 
-  constructor(private tarefaService: TarefaService) {}
-
-  // Exemplo de implementação:
+  // TODO: Implementar métodos aqui
   adicionarTarefa() {
-    this.tarefaService.adicionarTarefa(this.novoTitulo);
-    this.novoTitulo = '';
+    // Implementar lógica
   }
 
-  // implementar outros métodos aqui
+  // TODO: Implementar outros métodos
 }
 ```
 
@@ -150,20 +153,14 @@ O template deve conter estes **4 elementos principais**:
 - Para cada tarefa mostrar: título, botão/checkbox concluir, botão remover
 - Tarefas concluídas devem ter visual diferente
 
-**Classes CSS já prontas:** `.container`, `.form-section`, `.filters`, `.tasks-list`, `.task-item`, `.tarefa-concluida`, `.tarefa-pendente`
-
 ## Métodos a Implementar
 
-1. `adicionarTarefa()` - Chama service para adicionar
-2. `toggleConcluida(id: number)` - Chama service para alterar status
-3. `removerTarefa(id: number)` - Chama service para remover
-4. `filtrarTarefas()` - Chama service com filtro atual
-5. `contarPendentes()` - Chama service para contar pendentes
-
-**Vantagem do Service:**
-- Lógica de negócio centralizada
-- Dados mock prontos para uso
-- Foco no data binding e eventos do Angular
+1. `adicionarTarefa()` - Adiciona nova tarefa à lista
+2. `toggleConcluida(id: number)` - Alterna status de conclusão
+3. `removerTarefa(id: number)` - Remove tarefa da lista
+4. `filtrarTarefas()` - Retorna lista filtrada conforme filtro atual
+5. `contarPendentes()` - Conta tarefas não concluídas
+6. `gerarId()` - Gera ID único para novas tarefas
 
 ## Critérios de Avaliação
 

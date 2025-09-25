@@ -12,7 +12,6 @@ Nesta etapa da avaliação, você trabalhará com análise de dados em Python us
 │   └── analise_vendas.py        # Arquivo principal - IMPLEMENTAR AQUI
 ├── tests/
 │   └── test_analise.py          # Testes automatizados
-└── verificar-python.sh          # Script de verificação (Linux/Mac)
 ```
 
 ## Tecnologias Utilizadas
@@ -76,7 +75,7 @@ A função `main()` já está implementada e serve para testar suas funções. E
 - Exibe os resultados quando as funções estão implementadas
 - Não quebra se alguma função não estiver implementada
 
-Execute `py analise_vendas.py` para ver quais funções ainda precisam ser implementadas.
+Execute no terminal: `py analise_vendas.py` para ver quais funções ainda precisam ser implementadas.
 
 ## Como Executar
 
@@ -87,22 +86,30 @@ Execute `py analise_vendas.py` para ver quais funções ainda precisam ser imple
 ### Comandos para Execução
 
 1. **Navegar para o diretório:**
-   ```bash
+   Execute no terminal:
+   ```
    cd 03-python
    ```
 
 2. **Instalar dependências:**
-   ```bash
+   Execute no terminal:
+   ```
    pip install -r requirements.txt
+   # ou no Windows:
+   py -m pip install -r requirements.txt
    ```
 
 3. **Executar os testes:**
-   ```bash
+   Execute no terminal:
+   ```
    pytest tests/test_analise.py -v
+   # ou no Windows:
+   py -m pytest tests/test_analise.py -v
    ```
 
 4. **Executar testes específicos:**
-   ```bash
+   Execute no terminal:
+   ```
    # Testar função específica
    pytest tests/test_analise.py::TestFuncaoLerDados -v
    pytest tests/test_analise.py::TestFuncaoVendasPorVendedor -v
@@ -112,15 +119,12 @@ Execute `py analise_vendas.py` para ver quais funções ainda precisam ser imple
    ```
 
 5. **Executar seu código:**
-   ```bash
+   Execute no terminal:
+   ```
    cd solucao
    py analise_vendas.py
    ```
 
-6. **Verificação automática:**
-   ```bash
-   bash verificar-python.sh
-   ```
 
 ### Debugging e Desenvolvimento
 
