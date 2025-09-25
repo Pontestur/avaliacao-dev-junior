@@ -26,7 +26,8 @@ npm --version
 
 **Execute uma única vez para configurar todo o ambiente:**
 
-```bash
+Execute no terminal:
+```
 ./setup.sh
 ```
 
@@ -39,7 +40,8 @@ O script irá:
 - ✅ Inicializar repositório Git
 
 **Para verificar se tudo está funcionando:**
-```bash
+Execute no terminal:
+```
 ./run-tests.sh
 ```
 
@@ -52,7 +54,8 @@ O script irá:
 - 🗄️ Banco SQLite com dados de teste já criado
 
 **Para testar:**
-```bash
+Execute no terminal:
+```
 cd 01-sql/tests && python test_queries.py
 ```
 
@@ -63,7 +66,8 @@ cd 01-sql/tests && python test_queries.py
 - 🧪 **19 testes** para validar implementação
 
 **Para testar:**
-```bash
+Execute no terminal:
+```
 cd 02-csharp && dotnet test
 ```
 
@@ -74,7 +78,8 @@ cd 02-csharp && dotnet test
 - 📁 CSV com dados de vendas já criado
 
 **Para testar:**
-```bash
+Execute no terminal:
+```
 cd 03-python/tests && python -m pytest test_analise.py -v
 ```
 
@@ -85,7 +90,8 @@ cd 03-python/tests && python -m pytest test_analise.py -v
 - 🎨 Interface responsiva e funcional
 
 **Para testar:**
-```bash
+Execute no terminal:
+```
 cd 04-angular/tarefas-app && ng serve
 ```
 **Abrir:** `http://localhost:4200`
@@ -123,7 +129,8 @@ avaliacao-dev-junior/
 
 ## 🧪 Comandos de Teste por Tecnologia
 
-```bash
+Execute no terminal:
+```
 # Testar tudo de uma vez
 ./run-tests.sh
 
@@ -150,20 +157,19 @@ cd 04-angular/tarefas-app && ng build
 - **Python** (Microsoft) - *Para Python*
 - **Angular Language Service** (Angular) - *Para Angular*
 
-### Úteis:
-- **GitLens** (Eric Amodio) - *Para Git*
-- **Auto Rename Tag** (Jun Han) - *Para HTML*
 
 ## 🆘 Problemas Comuns
 
 ### ❌ Setup falhou
-```bash
+Execute no terminal:
+```
 # Reconfigurar tudo
 rm .setup_done && ./setup.sh
 ```
 
 ### ❌ Erro de versão do .NET
-```bash
+Execute no terminal:
+```
 dotnet --version  # Deve ser 9.0.x
 ```
 
@@ -175,13 +181,15 @@ py -m pip install pandas pytest
 ```
 
 ### ❌ Angular CLI não instalado
-```bash
+Execute no terminal:
+```
 npm install -g @angular/cli
 ng version
 ```
 
 ### 💡 Abrindo projetos no VS Code
-```bash
+Execute no terminal:
+```
 # Projeto específico
 code 02-csharp
 code 03-python
