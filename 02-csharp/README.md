@@ -100,11 +100,14 @@ Implemente os seguintes métodos:
    Execute no terminal:
    ```
    # Executar apenas testes de uma classe
-   dotnet test --filter "ClassName=ProdutoTests"
-   dotnet test --filter "ClassName=EstoqueManagerTests"
+   dotnet test --filter "FullyQualifiedName~ProdutoTests"
+   dotnet test --filter "FullyQualifiedName~EstoqueManagerTests"
 
    # Executar um teste específico
-   dotnet test --filter "MethodName=CalcularDesconto_DeveRetornarPrecoComDesconto"
+   dotnet test --filter "FullyQualifiedName=AvaliationApp.Tests.ProdutoTests.CalcularDesconto_DeveRetornarPrecoComDesconto"
+
+   # Ou usando DisplayName (mais simples)
+   dotnet test --filter "DisplayName~CalcularDesconto_DeveRetornarPrecoComDesconto"
    ```
 
 ### Debugging e Desenvolvimento
